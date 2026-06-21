@@ -1,0 +1,27 @@
+{
+  "summary": "Phase 4 Calendar tab verified end-to-end on Expo web preview (mobile viewport 390x844). All 7 requested flows pass. (A) Empty state: streak-value='0', subtitle='Log a workout today to start your streak.', upcoming-plans NOT rendered, legend shows both 'Logged workout' and 'Planned workout'. (B) Onboarding 'No, thanks' reaches the tabs and persists. (C) After logging Squat 100x5 today on the Logger tab and switching to Calendar, streak-value becomes '1', subtitle becomes \"You're on the board. Keep it rolling.\", and today's cell shows the solid #3B82F6 blue completed dot inside calendar-grid-wrap. (D) Tapping today does NOT open plan-modal (plan-sheet not visible). (E) Tapping a past date (today-2d) also does NOT open the modal. (F) Tapping a future date (today+10d, navigating to next month when needed via the rightArrow header testID) opens plan-modal with plan-modal-date='Monday, June 29', plan-muscle-{legs,chest,back,shoulders} chips present, plan-save-button present, plan-delete-button correctly absent for a fresh date. (G) Saving with Chest closes the modal, renders the muted violet (#A78BFA) planned dot on the future cell, and adds an 'upcoming-plans' card with an 'upcoming-2026-06-29' row. (H/I) Re-tapping the same planned date re-opens the modal with plan-delete-button visible; switching to Back and pressing Save (button label 'Update plan') updates the upcoming row text to 'Mon, Jun 29 / Back day'. (J) Re-opening and pressing plan-delete-button removes the row and hides the upcoming-plans card. (K) Persistence: a Shoulders plan saved, then tab→Logger→tab→Calendar still shows the planned dot and 'upcoming-2026-06-29' row. (L) useFocusEffect refresh: pressing date-prev-button on Logger, logging another set (Squat 105x5 yesterday), and switching back to Calendar updates streak-value to '2' without an app reload with subtitle \"2 days strong. Don't break the chain.\". No critical or blocking issues found. Pre-existing react-native-chart-kit deprecation noise (unrelated to Phase 4) carries over from Phase 3.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_3.json"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "calendar.tsx correctly uses useFocusEffect with a cancellation flag and reloads both sets and plans on focus — guarantees streak + dots stay in sync after logging on the Logger tab.",
+    "calendar.tsx handleDayPress guards future-only via `day.dateString <= todayKey` return — correct semantics (today + past are no-ops).",
+    "planned-storage.ts uses the shared storage util (single AsyncStorage key 'fit.planned.v1'), keyed by dateKey with idempotent save/delete — schema is minimal and forward-compatible.",
+    "streak.ts correctly handles the grace-period semantics: counts back from today if today has a set, else from yesterday if yesterday has a set, otherwise 0 — matches PRD.",
+    "PlanModal sheet is wrapped in a Pressable backdrop with onPress=onClose and inner Pressable.stopPropagation — backdrop tap dismisses, sheet body taps don't.",
+    "calendar.tsx Calendar component is re-keyed by `cal-${loggedKeys.size}-${plans.length}` which forces a remount when data changes; this is what makes new dots/violet markers appear immediately after save/delete, but it also resets the visible month back to the today-month. This is currently harmless because user flows that mutate plans operate from the future-date view they just tapped, but if future iterations let users plan multiple months ahead, consider preserving the visible month (e.g., use `current` prop)."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (frontend-only)", "frontend": "100%" },
+  "seed_data_creation": "No localStorage seeding required — drove the real onboarding-skip and Logger UI to populate fit.workouts.v1 and fit.planned.v1. Cleared all keys via window.localStorage.clear() before each run.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "react-native-calendars day cells render with testID `undefined.day_YYYY-MM-DD` (literal 'undefined.' prefix because no calendarKey is passed). The header arrows are `undefined.header.leftArrow` / `undefined.header.rightArrow`. aria-label is ' Weekday D Month YYYY ' with leading/trailing spaces — using the testID is more reliable than get_by_role/get_by_label. The PlanModal testIDs ('plan-modal' on the Modal, 'plan-sheet' on the inner sheet) both exist in the DOM at all times because PlanModal returns null when !visible — use is_visible() on plan-sheet to assert open/closed state. The Calendar component is keyed by data length so it resets to today's month on every save/delete; tests must re-navigate to the future month via the rightArrow if needed. Tab navigation works reliably via the tabBarButtonTestID values 'tab-logger' / 'tab-progress' / 'tab-calendar'. Mobile viewport 390x844 used.",
+  "rca_of_issue": "No app bugs identified. One test-script issue encountered (not a code defect): the aria-label format used by react-native-calendars on web is ' Friday 19 June 2026 ' (leading/trailing whitespace, weekday-first then day-month-year), not 'Friday, June 19 2026' — switching to the testID-based selector `undefined.day_YYYY-MM-DD` resolved this on the second pass."
+}
