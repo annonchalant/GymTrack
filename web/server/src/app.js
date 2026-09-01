@@ -1,6 +1,7 @@
 // Express app assembly — middleware stack, module routers, error pipeline.
 // Kept separate from the bootstrap (index.js) so tests can import the app
-// without binding a port.
+// without binding a port, and exported as default so serverless platforms
+// (Vercel) can invoke the app directly no matter which module they load.
 
 import cors from "cors";
 import express from "express";
@@ -29,3 +30,8 @@ export function createApp() {
 
   return app;
 }
+
+// Shared singleton — used by src/index.js (local server) and api/index.js
+// (Vercel serverless entry) so both run the same instance.
+const app = createApp();
+export default app;

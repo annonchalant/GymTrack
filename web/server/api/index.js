@@ -3,6 +3,6 @@
 // exporting the Express app (no app.listen) is the supported pattern.
 // Local development still uses `npm run dev` → src/index.js.
 
-import { createApp } from "../src/app.js";
+import app from "../src/app.js";
 
-export default createApp();
+export default app;

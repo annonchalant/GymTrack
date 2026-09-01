@@ -9,12 +9,10 @@
 //   POST   /api/storage         (auth) { key, value } -> { status }
 //   DELETE /api/storage/:key    (auth) -> { status }
 
-import { createApp } from "./app.js";
+import app from "./app.js";
 import { env } from "./config/env.js";
 import { logger } from "./lib/logger.js";
 import { disconnectPrisma } from "./lib/prisma.js";
-
-const app = createApp();
 
 const server = app.listen(env.port, () => {
   logger.info(`GymTrack API listening on http://localhost:${env.port}`, {
