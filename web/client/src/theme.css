@@ -1,0 +1,410 @@
+/* GymTrack web — global styles.
+   Tokens ported 1:1 from the mobile app's src/theme/colors.ts.
+   Mobile-first: the app renders as a phone-width column; on larger screens
+   the column stays centered on the page background. */
+
+:root {
+  --bg: #0b0b0f;
+  --surface: #16161d;
+  --surface-elevated: #1e1e27;
+  --border: #2a2a36;
+
+  --text-primary: #ffffff;
+  --text-secondary: #b5b5c3;
+  --text-muted: #6e6e80;
+
+  --accent: #3b82f6;
+  --accent-pressed: #2563eb;
+  --accent-soft: rgba(59, 130, 246, 0.15);
+
+  --success: #22c55e;
+  --danger: #ef4444;
+
+  --sp-xs: 4px;
+  --sp-sm: 8px;
+  --sp-md: 16px;
+  --sp-lg: 24px;
+  --sp-xl: 32px;
+  --sp-xxl: 48px;
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  --tabbar-h: 68px;
+  --app-max-w: 480px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  background: none;
+  color: inherit;
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── App shell ────────────────────────────────────────────────────────────── */
+
+.app-shell {
+  max-width: var(--app-max-w);
+  margin: 0 auto;
+  min-height: 100dvh;
+  background: var(--bg);
+  position: relative;
+}
+
+@media (min-width: 481px) {
+  body {
+    background: #060609;
+  }
+  .app-shell {
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+}
+
+/* Screens that live inside the tab layout leave room for the fixed tab bar. */
+.screen {
+  padding: var(--sp-md) var(--sp-lg) var(--sp-xxl);
+  padding-bottom: calc(var(--tabbar-h) + var(--sp-xxl));
+  min-height: 100dvh;
+}
+
+/* ── Typography ───────────────────────────────────────────────────────────── */
+
+.eyebrow {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--accent);
+  margin-bottom: var(--sp-xs);
+}
+
+.display-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+}
+
+.t-label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.t-caption {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+
+.btn {
+  flex: 1;
+  min-height: 56px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-sm);
+  border-radius: var(--r-md);
+  padding: 0 var(--sp-md);
+  font-size: 18px;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+
+.btn-primary:not(:disabled):active {
+  background: var(--accent-pressed);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.btn-danger-outline {
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: var(--danger);
+  font-weight: 600;
+}
+
+/* ── Cards / rows ─────────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-md);
+}
+
+.icon-bubble {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Bottom-sheet modal ───────────────────────────────────────────────────── */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  animation: fade-in 0.15s ease;
+}
+
+/* Keep sheets aligned with the phone column on wide screens. */
+.modal-backdrop .sheet {
+  width: 100%;
+  max-width: var(--app-max-w);
+  margin: 0 auto;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-top-left-radius: var(--r-xl);
+  border-top-right-radius: var(--r-xl);
+  padding: var(--sp-sm) var(--sp-lg) var(--sp-xl);
+  max-height: 90dvh;
+  overflow-y: auto;
+  animation: sheet-up 0.2s ease;
+}
+
+.modal-backdrop.center {
+  justify-content: center;
+  padding: 0 var(--sp-lg);
+}
+
+.modal-backdrop.center .dialog {
+  width: 100%;
+  max-width: calc(var(--app-max-w) - var(--sp-lg) * 2);
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-lg);
+  max-height: 90dvh;
+  overflow-y: auto;
+  animation: fade-in 0.2s ease;
+}
+
+.sheet-handle {
+  width: 44px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  margin: 0 auto var(--sp-md);
+}
+
+.sheet-title-label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-md);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Form fields ──────────────────────────────────────────────────────────── */
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  margin-top: var(--sp-sm);
+  margin-bottom: var(--sp-sm);
+}
+
+.text-input {
+  width: 100%;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 14px var(--sp-md);
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 500;
+  min-height: 52px;
+}
+
+.text-input:focus {
+  border-color: var(--accent);
+}
+
+/* Dark-theme native date input */
+input[type="date"].text-input {
+  color-scheme: dark;
+}
+
+/* ── Muscle chips (custom exercise + plan modals) ─────────────────────────── */
+
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-lg);
+}
+
+.chip {
+  flex: 1 1 48%;
+  min-height: 52px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: 0 var(--sp-md);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: left;
+}
+
+.chip .chip-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.chip .chip-text {
+  flex: 1;
+}
+
+.chip.active {
+  color: var(--text-primary);
+}
+
+.actions-row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--sp-sm);
+}
+
+/* ── Tab bar ──────────────────────────────────────────────────────────────── */
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--app-max-w);
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
+  padding: 6px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: row;
+  z-index: 40;
+}
+
+.tab-bar a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.tab-bar a.active {
+  color: var(--accent);
+}
+
+.tab-bar a svg {
+  font-size: 24px;
+}
+
+/* ── Scrollbars (subtle, dark) ────────────────────────────────────────────── */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}

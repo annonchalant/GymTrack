@@ -3,8 +3,10 @@
 // exercise picker (built-in + custom) · set form · rest timer · history list.
 
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,6 +14,8 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import { useAuth } from "@/src/context/auth-context";
 
 import AdaptiveBanner from "@/src/components/logger/AdaptiveBanner";
 import CustomExerciseModal from "@/src/components/logger/CustomExerciseModal";
@@ -62,6 +66,8 @@ import {
 
 export default function LoggerScreen() {
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const { logout, username } = useAuth();
+  const router = useRouter();
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [cyclePrefs, setCyclePrefs] = useState<CyclePrefs | null>(null);
@@ -190,6 +196,24 @@ export default function LoggerScreen() {
   const cycleStatus = getCycleStatus(cyclePrefs, dateKey);
   const todayLabel = formatDateLong(fromDateKey(dateKey));
 
+  const handleLogout = () => {
+    Alert.alert(
+      "Sign out",
+      "Are you sure you want to sign out?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Sign out",
+          style: "destructive",
+          onPress: async () => {
+            await logout();
+            router.replace("/login");
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <SafeAreaView
       style={styles.safe}
@@ -202,10 +226,23 @@ export default function LoggerScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.eyebrow}>
-          {profile?.name ? `HI, ${profile.name.split(" ")[0].toUpperCase()}` : "LOGGER"}
-        </Text>
-        <Text style={styles.title}>Log a set</Text>
+        {/* Header row: greeting + logout */}
+        <View style={styles.headerRow}>
+          <View style={styles.headerText}>
+            <Text style={styles.eyebrow}>
+              {profile?.name ? `HI, ${profile.name.split(" ")[0].toUpperCase()}` : username ? `HI, ${username.toUpperCase()}` : "LOGGER"}
+            </Text>
+            <Text style={styles.title}>Log a set</Text>
+          </View>
+          <TouchableOpacity
+            onPress={handleLogout}
+            style={styles.logoutBtn}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            testID="logout-button"
+          >
+            <Ionicons name="log-out-outline" size={22} color={colors.textMuted} />
+          </TouchableOpacity>
+        </View>
 
         {/* Today's plan banner — surfaces the configured weekly split */}
         <TouchableOpacity
@@ -307,6 +344,17 @@ const styles = StyleSheet.create({
     paddingTop: spacing.md,
     paddingBottom: spacing.xxl,
   },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    marginBottom: spacing.lg,
+  },
+  headerText: { flex: 1 },
+  logoutBtn: {
+    marginTop: spacing.xs,
+    padding: spacing.xs,
+  },
   eyebrow: {
     ...typography.label,
     color: colors.accent,
@@ -315,7 +363,7 @@ const styles = StyleSheet.create({
   title: {
     ...typography.display,
     color: colors.textPrimary,
-    marginBottom: spacing.lg,
+    marginBottom: 0,
   },
   planBanner: {
     flexDirection: "row",

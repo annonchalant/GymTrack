@@ -3,6 +3,8 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { getToken as getSecureToken } from "@/src/utils/token-storage";
+
 export type StorageItemKey = string;
 export type StorageItemValue = string | number | boolean | null;
 
@@ -22,6 +24,20 @@ export const getApiUrl = () => {
 
 export const API_URL = getApiUrl();
 
+const TOKEN_KEY = "auth.jwt.v1";
+
+async function getAuthHeader(): Promise<Record<string, string>> {
+  try {
+    const token = await getSecureToken(TOKEN_KEY);
+    if (token) {
+      return { Authorization: `Bearer ${token}` };
+    }
+  } catch {
+    // silently skip
+  }
+  return {};
+}
+
 export abstract class StorageBase {
   protected warn(op: string, key: StorageItemKey, e: unknown) {
     console.warn(`[storage] ${op}(${key}) failed`, e);
@@ -29,9 +45,11 @@ export abstract class StorageBase {
 
   protected async syncSet(key: string, valueStr: string): Promise<void> {
     try {
+      const authHeader = await getAuthHeader();
+      if (!authHeader.Authorization) return; // skip sync if not logged in
       await fetch(`${API_URL}/api/storage`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeader },
         body: JSON.stringify({ key, value: valueStr }),
       });
     } catch (e) {
@@ -41,8 +59,11 @@ export abstract class StorageBase {
 
   protected async syncRemove(key: string): Promise<void> {
     try {
+      const authHeader = await getAuthHeader();
+      if (!authHeader.Authorization) return; // skip sync if not logged in
       await fetch(`${API_URL}/api/storage/${key}`, {
         method: "DELETE",
+        headers: { ...authHeader },
       });
     } catch (e) {
       console.warn(`[storage] syncRemove(${key}) failed`, e);
@@ -51,7 +72,12 @@ export abstract class StorageBase {
 
   async syncWithBackend(): Promise<void> {
     try {
-      const response = await fetch(`${API_URL}/api/storage`);
+      const authHeader = await getAuthHeader();
+      if (!authHeader.Authorization) return; // no token — skip
+
+      const response = await fetch(`${API_URL}/api/storage`, {
+        headers: { ...authHeader },
+      });
       if (!response.ok) return;
       const dbItems: { key: string; value: string }[] = await response.json();
       const dbMap = new Map(dbItems.map((item) => [item.key, item.value]));

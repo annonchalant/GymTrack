@@ -1,0 +1,31 @@
+// GymTrack schema - mirrors the original tables exactly:
+//   users(id, username unique, password_hash, created_at)
+//   storage(user_id, key, value, updated_at) with PK (user_id, key)
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("users")
+}
+
+model StorageItem {
+  userId    String   @map("user_id")
+  key       String
+  value     String
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@id([userId, key])
+  @@map("storage")
+}

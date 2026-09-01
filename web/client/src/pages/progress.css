@@ -1,0 +1,139 @@
+/* Progress screen — strength + muscle distribution cards. */
+
+.progress-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-md);
+  margin-bottom: var(--sp-md);
+}
+
+.progress-card .card-label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-xs);
+}
+
+.progress-card .card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--sp-md);
+}
+
+.progress-picker-wrap {
+  margin-bottom: var(--sp-md);
+}
+
+.progress-meta-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 var(--sp-sm);
+  margin-top: var(--sp-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.progress-meta-row .meta-value {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.mini-empty {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-sm);
+  background: var(--surface-elevated);
+  border: 1px dashed var(--border);
+  border-radius: var(--r-md);
+  padding: var(--sp-md);
+  color: var(--text-muted);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.mini-empty svg {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.muscle-legend {
+  margin-top: var(--sp-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.muscle-legend .legend-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+.muscle-legend .legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--r-pill);
+  flex-shrink: 0;
+}
+
+.muscle-legend .legend-label {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.muscle-legend .legend-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Global empty state */
+.progress-empty-wrap {
+  min-height: calc(100dvh - var(--tabbar-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--sp-xl);
+  text-align: center;
+}
+
+.progress-empty-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--sp-lg);
+  color: var(--accent);
+  font-size: 40px;
+}
+
+.progress-empty-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text-primary);
+  margin-bottom: var(--sp-sm);
+}
+
+.progress-empty-body {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 24px;
+  max-width: 280px;
+}

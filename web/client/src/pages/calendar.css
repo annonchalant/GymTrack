@@ -1,0 +1,303 @@
+/* Calendar screen — streak card, month grid, legend, upcoming plans. */
+
+/* ── StreakCard ── */
+
+.streak-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-lg);
+}
+
+.streak-card.active {
+  background: var(--surface-elevated);
+  border-color: var(--accent);
+  /* Subtle accent glow. */
+  box-shadow: 0 0 18px rgba(59, 130, 246, 0.3);
+}
+
+.streak-card .streak-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.streak-card.active .streak-icon-wrap {
+  color: var(--accent);
+}
+
+.streak-card .streak-label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.streak-card .streak-number-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.streak-card .streak-number {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+  line-height: 52px;
+  font-variant-numeric: tabular-nums;
+}
+
+.streak-card .streak-unit {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.streak-card .streak-subtitle {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* ── Month calendar ── */
+
+.cal-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-sm) var(--sp-sm);
+  overflow: hidden;
+}
+
+.cal-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-sm) var(--sp-sm);
+}
+
+.cal-header .cal-month-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cal-header .cal-arrow {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 22px;
+  border-radius: var(--r-md);
+}
+
+.cal-dow-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 2px;
+}
+
+.cal-dow {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 6px 0;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-day {
+  position: relative;
+  height: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 5px;
+  background: none;
+}
+
+.cal-day .day-num {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cal-day.outside .day-num {
+  color: var(--text-muted);
+}
+
+.cal-day.today .day-num {
+  color: var(--accent);
+}
+
+.cal-day.selected .day-num {
+  background: rgba(59, 130, 246, 0.18);
+}
+
+.cal-day .day-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 3px;
+  margin-top: 1px;
+}
+
+/* ── Legend ── */
+
+.cal-legend {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--sp-md);
+  padding: 0 var(--sp-md);
+}
+
+.cal-legend .legend-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.cal-legend .legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+}
+
+/* ── Upcoming plans ── */
+
+.upcoming-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.upcoming-card .card-label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-xs);
+}
+
+.upcoming-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-md);
+  padding: var(--sp-sm) 0;
+}
+
+.upcoming-row .upcoming-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.upcoming-row .upcoming-date {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.upcoming-row .upcoming-muscle {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.upcoming-row .source-tag {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.upcoming-row .upcoming-chevron {
+  color: var(--text-muted);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* ── Hint row ── */
+
+.cal-hint-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: 0 var(--sp-md);
+  margin-top: var(--sp-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.cal-hint-row svg {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* ── PlanModal extras ── */
+
+.baseline-chip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-sm);
+  background: var(--accent-soft);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: var(--r-md);
+  padding: var(--sp-sm) var(--sp-md);
+  margin-bottom: var(--sp-lg);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.baseline-chip svg {
+  color: var(--accent);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.baseline-chip .baseline-em {
+  color: var(--text-primary);
+  font-weight: 700;
+}

@@ -8,6 +8,8 @@
 node_modules/
 /node_modules
 /.pnp
+/.pem
+.pem
 .pnp.js
 .yarn/install-state.gz
 .yarn/*
@@ -86,3 +88,6 @@ android-sdk/
 credentials.json
 *.key
 .credentials
+
+# Claude Code local settings (machine-specific permissions)
+.claude/settings.local.json
