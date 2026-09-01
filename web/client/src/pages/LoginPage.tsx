@@ -4,7 +4,6 @@
 import { useState, type FormEvent } from "react";
 import {
   IoAlertCircleOutline,
-  IoBarbell,
   IoCheckmarkCircleOutline,
   IoEyeOffOutline,
   IoEyeOutline,
@@ -14,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import * as authApi from "@/api/auth-api";
+import Logo from "@/components/Logo";
 import { ApiRequestError } from "@/api/http";
 import { useAuth } from "@/context/auth-context";
 import { storage } from "@/utils/storage";
@@ -88,10 +88,8 @@ export default function LoginPage() {
     <div className="login-screen">
       {/* ── Logo / Brand ─────────────────────────────────────────────── */}
       <div className="login-brand">
-        <div className="login-logo-circle">
-          <IoBarbell />
-        </div>
-        <div className="login-app-name">GymTrack</div>
+        <Logo size={80} className="login-logo" />
+        <div className="login-app-name">RepDiary</div>
         <div className="login-tagline">Your progress, securely yours</div>
       </div>
 

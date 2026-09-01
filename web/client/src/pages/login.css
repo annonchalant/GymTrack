@@ -15,18 +15,9 @@
   margin-bottom: var(--sp-xl);
 }
 
-.login-logo-circle {
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
-  background: var(--accent-soft);
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.login-logo {
+  display: block;
   margin-bottom: var(--sp-md);
-  color: var(--accent);
-  font-size: 36px;
 }
 
 .login-app-name {
